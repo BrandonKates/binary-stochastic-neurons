@@ -102,7 +102,7 @@ def train(epoch):
         train_loss += loss.data
 
     train_loss /= len(train_loader)
-    train_loss = train_loss[0]
+    train_loss = train_loss.item()
 
     print ('Training Loss : {}'.format(train_loss))
 
@@ -120,15 +120,15 @@ def test(epoch, best_acc):
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data, volatile=True), Variable(target)
         output = model((data, slope))
-        test_loss += F.nll_loss(output, target, size_average=False).data[0] # sum up batch loss
+        test_loss += F.nll_loss(output, target, size_average=False).data.item() # sum up batch loss
         pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
         correct += pred.eq(target.data.view_as(pred)).cpu().sum()
 
     test_loss /= len(test_loader.dataset)
     test_acc = correct / len(test_loader.dataset)
-    print ('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n').format(
+    print ('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
           test_loss, int(correct), len(test_loader.dataset),
-          100. * test_acc)
+          100. * test_acc))
 
     if test_acc >= best_acc:
         torch.save(model.state_dict(), os.path.join('models','{}.pth'.format(model_name)))
