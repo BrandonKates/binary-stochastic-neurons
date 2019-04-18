@@ -1,2 +1,2 @@
-from bernoulli import Bernoulli
-from round import Round
+from distributions.bernoulli import Bernoulli
+from distributions.round import Round

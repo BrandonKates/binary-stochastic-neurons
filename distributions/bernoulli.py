@@ -2,12 +2,12 @@ from numbers import Number
 
 import torch
 from torch.autograd import Variable
-from distribution import Distribution
-from utils import broadcast_all
+from .distribution import Distribution
+from .utils import broadcast_all
 
 
 class Bernoulli(Distribution):
-    r"""
+    """
     Creates a Bernoulli distribution parameterized by `probs`.
     Samples are binary (0 or 1). They take the value `1` with probability `p`
     and `0` with probability `1 - p`.

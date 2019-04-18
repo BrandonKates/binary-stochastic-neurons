@@ -1,4 +1,4 @@
-import argparse, os
+import argparse, os, sys
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
@@ -6,6 +6,8 @@ from torchvision import datasets, transforms
 from torch.autograd import Variable
 
 from model import NonBinaryNet, BinaryNet
+
+sys.path.insert(0, 'distributions/')
 
 # Training settings
 parser = argparse.ArgumentParser(description='Binary Neurons')
@@ -83,7 +85,7 @@ def train(epoch):
 
     slope = get_slope(epoch)
 
-    print '# Epoch : {} - Slope : {}'.format(epoch, slope)
+    print ('# Epoch : {} - Slope : {}'.format(epoch, slope))
 
     model.train()
     train_loss = 0
@@ -102,7 +104,7 @@ def train(epoch):
     train_loss /= len(train_loader)
     train_loss = train_loss[0]
 
-    print 'Training Loss : {}'.format(train_loss)
+    print ('Training Loss : {}'.format(train_loss))
 
     return train_loss
 
@@ -124,7 +126,7 @@ def test(epoch, best_acc):
 
     test_loss /= len(test_loader.dataset)
     test_acc = correct / len(test_loader.dataset)
-    print 'Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+    print ('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n').format(
           test_loss, int(correct), len(test_loader.dataset),
           100. * test_acc)
 
@@ -134,7 +136,7 @@ def test(epoch, best_acc):
     return test_loss, test_acc
 
 model_name = '{}-{}-{}-{}'.format(model.__class__.__name__, model.mode, model.estimator, args.slope_annealing)
-print 'Model : {}'.format(model_name.replace('-', ' - '))
+print ('Model : {}'.format(model_name.replace('-', ' - ')))
 
 best_acc = 0.0
 log_file = open(os.path.join('logs', '{}.log'.format(model_name)), 'w')

@@ -4,7 +4,7 @@ import warnings
 
 
 class Distribution(object):
-    r"""
+    """
     Distribution is the abstract base class for probability distributions.
     """
 
